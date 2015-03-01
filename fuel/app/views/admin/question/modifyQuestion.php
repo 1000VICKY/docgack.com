@@ -1,4 +1,4 @@
-<div id="">
+<div class="innerTemplate">
     <div>
         <form action="/admin/modifyCheckQuestion" method="post" name="newProjectForm">
             <input type="hidden" name="projectId" value="<?php print($projectId); ?>" />
@@ -28,7 +28,10 @@
             <p><input class="form-control input-lg" name="questionTitle" value="<?php print(implode(",", $questionData[0]["choice_number"])); ?>" type="text" readonly="readonly" ></p>
             <p>▼新規設問文の選択肢一覧入力(※空欄は無視されます。)</p>
             <?php for($i = 0 ; $i < $defaultSelectCount; $i++){  ?>
-                <p><textarea class="form-control input-lg" name="choiceList[]" rows="3"><?php print($questionData[0]["choice_list"][$i]["choiceText"]); ?></textarea></p>
+                <div class="row margin-bottom">
+                    <div class="col-md-1 margin-bottom"><input class="form-control input-lg" type="text" readonly="readonly" value="<?php print($i); ?>" /></div>
+                    <div class="col-md-11"><textarea class="form-control input-lg" name="choiceList[]" rows="3"><?php print($questionData[0]["choice_list"][$i]["choiceText"]); ?></textarea></div>
+                </div>
             <?php } ?>
             <p><a href="/admin/modifyQuestion/<?php print($projectId); ?>/<?php print($questionId); ?>/up">▲選択肢を増やす</a></p>
             <p><a href="/admin/modifyQuestion/<?php print($projectId); ?>/<?php print($questionId); ?>/down">▼選択肢を減らす</a>

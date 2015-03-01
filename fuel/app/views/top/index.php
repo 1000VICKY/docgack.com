@@ -8,6 +8,7 @@
             <p><input type="password" class="form-control input-lg btn-group-justified" name="userPass"/></p>
             <p><input type="submit" name="submitButton" class="btn btn-primary btn-group-justified" value="ログイン" /></p>
         </form>
-        <a href="/auth/new" class="btn btn-default btn-group-justified">新規アカウント登録へ</a>
+        <p><a href="/auth/new" class="btn btn-default btn-group-justified">新規アカウント登録へ</a></p>
+        <!--<p><a href="/auth/forget" class="btn btn-default btn-group-justified">アカウント紛失の場合</a></p>-->
     </div>
 </div>

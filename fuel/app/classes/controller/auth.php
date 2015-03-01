@@ -91,12 +91,33 @@ class Controller_Auth extends Controller_Template
         return Response::forge(Presenter::forge("top/404"), 404);
     }
 
-    //パスワードを忘れた場合
+    //アカウントまたはパスワードを忘れた場合
     public function action_forget()
     {
-
+        try{
+            $data = array();
+            $this->template->title = "認証処理/新規アカウント再発行ページ";
+            $this->template->content = View::forge("auth/forget", $data);
+        }catch(Exception $e){
+            $data["errorMessage"] = $e->getMessage();
+            $this->template->title = "アカウント再発行/エラー発生中。";
+            $this->template->content = View::forge("error/index", $data);
+        }
+    }
+    public function action_reissue()
+    {
+        try{
+            \Package::load("MyAuth");
+            $mailAddress = Input::post("mail");
+            $res = MyAuth::validate_user($mailAddress);
+            var_dump($res);
+            exit();
+        }catch(Exception $e){
+            $data["errorMessage"] = $e->getMessage();
+            $this->template->title = "アカウント再発行/エラー発生中。";
+            $this->template->content = View::forge("error/index", $data);
+        }
 
     }
-
 }
 
