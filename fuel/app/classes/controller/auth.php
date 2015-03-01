@@ -31,8 +31,19 @@ class Controller_Auth extends Controller_Template
             try{
                 $input = Input::post();
                 $res = Auth::create_user($input["username"], $input["password"], $input["mail"]);
-                Response::redirect("/");
-                exit();
+                if(is_numeric($res) === true){
+                    \Package::load("email");
+                    $mailObj = Email::forge();
+                    $mailObj->from("info@docgack.com", "アカウント新規登録");
+                    $mailObj->to($input["mail"]);
+                    $mailObj->subject("アカウント新規追加が完了しました。");
+                    $mailObj->body("独学.com 新規アカウント完了致しました。" . PHP_EOL . "あなたのアカウント名は{$input["username"]}です。");
+                    $mailObj->send();
+                    Response::redirect("/");
+                    exit();
+                } else {
+                    throw new Exception("アカウントの新規追加に失敗しました。");
+                }
                 $this->template->title = "認証処理/新規アカウント登録完了！";
                 $this->template->content = View::forge("auth/complete", $data);
             }catch(Exception $e){
@@ -79,5 +90,13 @@ class Controller_Auth extends Controller_Template
     {
         return Response::forge(Presenter::forge("top/404"), 404);
     }
+
+    //パスワードを忘れた場合
+    public function action_forget()
+    {
+
+
+    }
+
 }
 

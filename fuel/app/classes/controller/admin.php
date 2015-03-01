@@ -551,4 +551,21 @@ class Controller_Admin extends Controller_Template
             $this->template->content = View::forge("error/index", $data);
         }
     }
+
+    public function action_logout()
+    {
+        try{
+            $auth = Auth::instance();
+            if ($auth->logout() === true) {
+                Response::redirect("/");
+                exit();
+            } else {
+                throw new Exception("ログアウトに失敗しました。");
+            }
+        }catch(Exception $e){
+            $data["errorMessage"] = $e->getMessage();
+            $this->template->title = "ユーザーページ/設問文回答中エラー発生";
+            $this->template->content = View::forge("error/index", $data);
+        }
+    }
 }

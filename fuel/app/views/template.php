@@ -38,9 +38,9 @@ function cancel_tab(e) {
 </head>
 <body>
     <div id="wrapper">
-        <div class="btn btn-success btn-group-justified projectBox"><?php print($subHeader); ?></div>
+        <div class="btn btn-success btn-group-justified projectBox"><h1>独学.com|<?php print($subHeader); ?>|docgack.com</h1></div>
         <div id="mainHeader">
-            <h1><a href="/admin/index"><?php print($mainHeader); ?></a></h1>
+            <h2><a href="/admin/index"><?php print($mainHeader); ?></a> | <a href="/admin/logout">ログアウト</a></h2>
         </div>
         <?php echo($content); ?>
     </div>
