@@ -23,7 +23,6 @@
             <pre><?php print($questionText); ?></pre>
 
             <p>▼新規設問文の回答一覧入力</p>
-            <p>(※選択肢一覧は //(ダブルスラッシュ)区切りが各選択肢となります。)</p>
             <?php foreach($choiceList as $key => $value){ ?>
             <div class="checkbox">
                 <label>

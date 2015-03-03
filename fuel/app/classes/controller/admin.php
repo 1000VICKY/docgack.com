@@ -314,7 +314,7 @@ class Controller_Admin extends Controller_Template
                 throw new Exception("本プロジェクトはログイン中ユーザーの管理ではありません。");
             }
             $data = array();
-            $questionList = Model_Question::find("all", array("where" => array("project_id" => $projectId),"order_by" => array("question_id" =>  "asc")));
+            $questionList = Model_Question::find("all", array("where" => array("project_id" => $projectId, "delete_flag" => 0),"order_by" => array("question_id" =>  "asc")));
             $questionList = Model_Question::toArray($questionList);
             $data["questionList"] = $questionList;
             $data["projectId"] = $projectId;
@@ -389,6 +389,7 @@ class Controller_Admin extends Controller_Template
             foreach(Input::post() as $key => $value){
                 $input[$key] = Clean::cleaning($value);
             }
+            print_r($input);
             //選択肢の作成
             $tempList = array();
             $i = 0;
@@ -498,7 +499,6 @@ class Controller_Admin extends Controller_Template
                 "choice_list" => $rawChoiceList,
                 "choice_number" => $choiceNumber,
                 "explanation_text" => $input["rawExplanationText"],
-                "create_time" => $this->dateObj->format("y-m-d H:i:s"),
                 "update_time" => $this->dateObj->format("y-m-d H:i:s"),
                 "delete_flag" => 0,
             );
@@ -528,7 +528,7 @@ class Controller_Admin extends Controller_Template
             if($checkProjectId !== true){
                 throw new Exception("不正なprojectIdです。");
             }
-            $questionList = Model_Question::find("all", array("where" => array("project_id" => $projectId)));
+            $questionList = Model_Question::find("all", array("where" => array("project_id" => $projectId, "delete_flag" => 0)));
             $questionList = Model_Question::toArray($questionList);
             foreach($questionList as $key => $value){
                 $questionList[$key]["choice_list"] = json_decode($questionList[$key]["choice_list"], true);
@@ -545,6 +545,51 @@ class Controller_Admin extends Controller_Template
             $data["questionList"] = QuestionFormat::format($questionList);
             $this->template->title = "ユーザーページ/既存設問文編集";
             $this->template->content = View::forge("admin/question/viewQuestion", $data, false);
+        }catch(Exception $e){
+            $data["errorMessage"] = $e->getMessage();
+            $this->template->title = "ユーザーページ/設問文回答中エラー発生";
+            $this->template->content = View::forge("error/index", $data);
+        }
+    }
+
+    /**
+     * 設問の削除メソッド
+     */
+    public function action_deleteQuestion($projectId = null, $questionId = null)
+    {
+        try{
+            if (strtolower(Input::method()) === "post") {
+                $input = Input::post();
+                print_r($input);
+                if(is_numeric($input["projectId"]) === true && is_numeric($input["questionId"]) === true)
+                {
+                    //バリデートパス
+                }else {
+                    throw new Exception("不正なリクエストです。");
+                }
+                $model = Model_Question::find($input["questionId"]);
+                //question_tableへ設問の追加処理を行う。
+                $insertData = array(
+                    "project_id" => $input["projectId"],
+                    "question_id" => $input["questionId"],
+                    "update_time" => $this->dateObj->format("y-m-d H:i:s"),
+                    "delete_flag" => 1,
+                );
+                $res = $model->set($insertData);
+                if ($model->save() === true)
+                {
+                    Response::redirect("/admin/editQuestion/{$input["projectId"]}");
+                    exit();
+                } else {
+                    throw new Exception("指定した設問の削除に失敗しました。");
+                    exit();
+                }
+            }else {
+                $data["projectId"] = $projectId;
+                $data["questionId"] = $questionId;
+                $this->template->title = "設問の削除確認ページ";
+                $this->template->content = View::forge("admin/question/deleteCheck", $data);
+            }
         }catch(Exception $e){
             $data["errorMessage"] = $e->getMessage();
             $this->template->title = "ユーザーページ/設問文回答中エラー発生";

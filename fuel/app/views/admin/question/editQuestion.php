@@ -9,8 +9,9 @@
         </div>
         <div class="panel-body">
             <form action="/admin/modifyQuestion/<?php print($projectId); ?>/<?php print($value["question_id"]); ?>" name="" method="post">
-                <input type="submit" class="btn btn-default btn-group-justified" value="この設問を修正する" />
+                <input type="submit" class="btn btn-default btn-group-justified projectBox" value="この設問を修正する" />
             </form>
+            <p><a href="/admin/deleteQuestion/<?php print($projectId); ?>/<?php print($value["question_id"]); ?>">▼この設問を削除する▼</a></p>
         </div>
     </div>
 <?php } ?>

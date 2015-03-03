@@ -24,8 +24,10 @@
             <p>▼新規設問文の説明文入力</p>
             <p><textarea class="form-control input-lg" name="questionText" rows="5"><?php print($questionData[0]["question_text"]); ?></textarea></p>
 
+            <?php if (is_array($questionData[0]["choice_number"]) === true) { ?>
             <p>▼現在、選択中の回答番号</p>
-            <p><input class="form-control input-lg" name="questionTitle" value="<?php print(implode(",", $questionData[0]["choice_number"])); ?>" type="text" readonly="readonly" ></p>
+            <p><input class="form-control input-lg" value="<?php print(implode(",", $questionData[0]["choice_number"])); ?>" type="text" readonly="readonly" ></p>
+            <?php } ?>
             <p>▼新規設問文の選択肢一覧入力(※空欄は無視されます。)</p>
             <?php for($i = 0 ; $i < $defaultSelectCount; $i++){  ?>
                 <div class="row margin-bottom">
@@ -38,7 +40,6 @@
 
             <p>▼新規設問文の解説文入力</p>
             <p><textarea class="form-control input-lg" name="explanationText" rows="5"><?php print($questionData[0]["explanation_text"]); ?></textarea></p>
-
             <p><input type="submit" name="submitButton" class="btn btn-primary btn-group-justified" value="上記の内容で新規設問文の作成" /></p>
         </form>
     </div>
