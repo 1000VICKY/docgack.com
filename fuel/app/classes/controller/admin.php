@@ -551,6 +551,74 @@ class Controller_Admin extends Controller_Template
             $this->template->content = View::forge("error/index", $data);
         }
     }
+    /**
+     * 問題閲覧を一問ずつ行っていく
+     */
+    public function action_oneQuestion($projectId = null, $page = null)
+    {
+        try{
+            $data = array();
+            $checkProjectId = Model_Project::checkProjectId($this->userId, $projectId);
+            if($checkProjectId !== true){
+                throw new Exception("不正なprojectIdです。");
+            }
+            $questionList = Model_Question::find("all", array(
+                                                            "where" => array(
+                                                                            "project_id" => $projectId, "delete_flag" => 0),
+                                                                            "order_by" => array("question_id" => "asc")
+                                                            )
+            );
+            $questionList = Model_Question::toArray($questionList);
+            foreach($questionList as $key => $value){
+                $questionList[$key]["choice_list"] = json_decode($questionList[$key]["choice_list"], true);
+                if(json_last_error() !== JSON_ERROR_NONE){
+                    throw new Exception("「設問番号{$questionList[$key]["question_id"]}」の選択肢データの復号化に失敗しました。");
+                }
+                $questionList[$key]["choice_number"] = json_decode($questionList[$key]["choice_number"], true);
+                if(json_last_error() !== JSON_ERROR_NONE){
+                    throw new Exception("「設問番号{$questionList[$key]["question_id"]}」の選択肢の回答データの復号化に失敗しました。");
+                }
+            }
+            //URLパラメータの$page変数がnullの時のみ問題のシャッフルを行う。
+            if($page === null){
+                QuestionFormat::escape($questionList);
+                shuffle($questionList);
+                $questionNumberList = array();
+                foreach($questionList as $key => $value){
+                    $questionNumberList[] = $value["question_id"];
+                }
+                Session::set("questionNumberList", $questionNumberList);
+                $page = 0;
+            }
+            $temp = Session::get("questionNumberList");
+            $nowNumber = $temp[$page];
+            $question = Model_Question::find($nowNumber);
+            $questionList = array();
+            $questionList[] = $question->to_array();
+            foreach($questionList as $key => $value){
+                $questionList[$key]["choice_list"] = json_decode($questionList[$key]["choice_list"], true);
+                if(json_last_error() !== JSON_ERROR_NONE){
+                    throw new Exception("「設問番号{$questionList[$key]["question_id"]}」の選択肢データの復号化に失敗しました。");
+                }
+                $questionList[$key]["choice_number"] = json_decode($questionList[$key]["choice_number"], true);
+                if(json_last_error() !== JSON_ERROR_NONE){
+                    throw new Exception("「設問番号{$questionList[$key]["question_id"]}」の選択肢の回答データの復号化に失敗しました。");
+                }
+            }
+            $questionList = QuestionFormat::format($questionList);
+            $data["projectId"] = $projectId;
+            $data["questionList"] = $questionList;
+            $data["nowNumber"] = $nowNumber;
+            $data["page"] = $page;
+            $data["questionNumberList"] = $temp;
+            $this->template->title = "ユーザーページ/既存設問文編集";
+            $this->template->content = View::forge("admin/question/oneQuestion", $data, false);
+        }catch(Exception $e){
+            $data["errorMessage"] = $e->getMessage() . $e->getLine();
+            $this->template->title = "ユーザーページ/設問文回答中エラー発生";
+            $this->template->content = View::forge("error/index", $data);
+        }
+    }
 
     /**
      * 設問の削除メソッド
@@ -560,7 +628,6 @@ class Controller_Admin extends Controller_Template
         try{
             if (strtolower(Input::method()) === "post") {
                 $input = Input::post();
-                print_r($input);
                 if(is_numeric($input["projectId"]) === true && is_numeric($input["questionId"]) === true)
                 {
                     //バリデートパス
