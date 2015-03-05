@@ -38,16 +38,16 @@
                 <input type="button" class="btn btn-default btn-group-justified projectBox getExplanationText" value="解説を見る" />
             </form>
             <div class="displayExplanationText"></div>
-            <div class="clearfix"></div>
-            <div class="col-md-6 margin-bottom">
+            <div class="col-md-6 margin-bottom margin-top">
                 <?php if((int)$page > 0){ ?>
                 <a href="/admin/oneQuestion/<?php print($projectId); ?>/<?php print($page - 1); ?>" class="btn btn-primary btn-group-justified"><<前へ</a>
                 <?php } ?>
             </div>
-            <div class="col-md-6 margin-bottom">
+            <div class="col-md-6 margin-bottom margin-top">
                 <a href="/admin/oneQuestion/<?php print($projectId); ?>/<?php print($page + 1); ?>" class="btn btn-primary btn-group-justified">次へ>></a>
             </div>
-        </div>
+            <div class="clearfix"></div>
+            </div>
     </div>
     <?php } ?>
 </div>

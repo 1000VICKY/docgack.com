@@ -605,6 +605,7 @@ class Controller_Admin extends Controller_Template
                     throw new Exception("「設問番号{$questionList[$key]["question_id"]}」の選択肢の回答データの復号化に失敗しました。");
                 }
             }
+            QuestionFormat::escape($questionList);
             $questionList = QuestionFormat::format($questionList);
             $data["projectId"] = $projectId;
             $data["questionList"] = $questionList;
