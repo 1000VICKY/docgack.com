@@ -1,43 +1,3 @@
-<div class="innerTemplate">
-    <?php foreach($questionList as $key => $value) { ?>
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            「設問No:<?php print($value["question_id"]); ?>」<?php print($value["question_title"]); ?>
-        </div>
-        <div class="panel-body">
-            <div class="panel-body alert alert-warning alert-dismissible">
-                <pre class="resetClass"><?php print($value["question_text"]); ?></pre>
-            </div>
-            <!--▼▼▼ここから問題の選択肢を保持-->
-            <span class="selectRespond">
-            <?php foreach($value["question_list_format"] as $innerKey => $innerValue){ ?>
-                <?php print($innerValue); ?>
-            <?php } ?>
-            </span><!--//.selectRespond-->
-            <!--▲▲▲-->
-            <!--//▼▼▼ここから問題の回答を保持-->
-            <span class="answerText">
-            <?php
-                if(is_array($value["choice_number"]) === true){
-                    foreach($value["choice_number"] as $innerKey => $innerValue){
-            ?>
-                <input type="hidden" name="answerText" value="<?php print($innerValue); ?>" />
-            <?php
-                    }
-                }
-            ?>
-            </span>
-            <!--//▲▲▲-->
-            <!--//▼▼▼ここから問題の解説文を保持-->
-            <input type="hidden" class="explanation" name="explanationText" value="<?php print($value["explanation_text"]); ?>" />
-            <!--//▲▲▲-->
-            <form action="#" name="" method="post">
-                <input type="button" class="btn btn-default btn-group-justified projectBox getRespondButton" value="回答する" />
-            </form>
-            <form action="#" name="" method="post">
-                <input type="button" class="btn btn-default btn-group-justified projectBox getExplanationText" value="解説を見る" />
-            </form>
-            <div class="displayExplanationText"></div>
             <div class="col-md-6 margin-bottom margin-top">
                 <?php if((int)$page > 0){ ?>
                 <a href="/admin/oneQuestion/<?php print($projectId); ?>/<?php print($page - 1); ?>" class="btn btn-primary btn-group-justified"><<前へ</a>
@@ -47,14 +7,49 @@
                 <a href="/admin/oneQuestion/<?php print($projectId); ?>/<?php print($page + 1); ?>" class="btn btn-primary btn-group-justified">次へ>></a>
             </div>
             <div class="clearfix"></div>
+<div class="innerTemplate">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            「設問No:<?php print($questionList["question_id"]); ?>」<?php print($questionList["question_title"]); ?>
+        </div>
+        <div class="panel-body">
+            <div class="panel-body alert alert-warning alert-dismissible">
+                <pre class="resetClass"><?php print($questionList["question_text"]); ?></pre>
             </div>
+            <!--▼▼▼ここから問題の選択肢を保持-->
+            <span class="selectRespond">
+            <?php foreach($questionList["question_list_format"] as $innerKey => $innerValue){ ?>
+                <?php print($innerValue); ?>
+            <?php } ?>
+            </span><!--//.selectRespond-->
+            <!--▲▲▲-->
+            <!--//▼▼▼ここから問題の回答を保持-->
+            <span class="answerText">
+            <?php
+                if(is_array($questionList["choice_number"]) === true){
+                    foreach($questionList["choice_number"] as $innerKey => $innerValue){ ?>
+                        <input type="hidden" name="answerText" value="<?php print($innerValue); ?>" />
+            <?php
+                    }
+                } ?>
+            </span>
+            <!--//▲▲▲-->
+            <!--//▼▼▼ここから問題の解説文を保持-->
+            <input type="hidden" class="explanation" name="explanationText" value="<?php print($questionList["explanation_text"]); ?>" />
+            <!--//▲▲▲-->
+            <form action="#" name="" method="post">
+                <input type="button" class="btn btn-default btn-group-justified projectBox getRespondButton" value="回答する" />
+            </form>
+            <form action="#" name="" method="post">
+                <input type="button" class="btn btn-default btn-group-justified projectBox getExplanationText" value="解説を見る" />
+            </form>
+            <div class="displayExplanationText"></div>
+        </div>
     </div>
-    <?php } ?>
 </div>
 <script type="text/javascript">
     //<!--
     $(function (){
-
         //即時関数で実行
         (function (){
             window.onerror = function (errorMessage, errorUrl, errorLine){
@@ -142,4 +137,5 @@
             });
         }());
     });
+    //-->
 </script>

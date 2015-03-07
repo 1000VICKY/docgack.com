@@ -608,7 +608,7 @@ class Controller_Admin extends Controller_Template
             QuestionFormat::escape($questionList);
             $questionList = QuestionFormat::format($questionList);
             $data["projectId"] = $projectId;
-            $data["questionList"] = $questionList;
+            $data["questionList"] = $questionList[0];
             $data["nowNumber"] = $nowNumber;
             $data["page"] = $page;
             $data["questionNumberList"] = $temp;
