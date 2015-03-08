@@ -16,7 +16,7 @@ class Controller_Admin extends Controller_Template
         $this->userId = $temp["userId"];
         $this->userName = $temp["username"];
         $this->template->title = "ユーザーページ/初期ページ";
-        $this->template->footer = "独学.com Copyright 1000_VICKY All Rights Reserved.";
+        $this->template->footer = "独学.com|docgack.com Copyright 1000_VICKY All Rights Reserved.";
     }
 
     public function action_index()
@@ -535,63 +535,51 @@ class Controller_Admin extends Controller_Template
             if($checkProjectId !== true){
                 throw new Exception("不正なprojectIdです。");
             }
-            $questionList = Model_Question::find("all", array(
-                    "where" => array( "project_id" => $projectId, "delete_flag" => 0),
-                    "order_by" => array("question_id" => "asc")
-                )
-            );
+            $questionList = Model_Question::query()
+                ->select("*")
+                ->where("project_id", "=", $projectId)
+                ->where("delete_flag", "=", 0)
+                ->get();
             $questionList = Model_Question::toArray($questionList);
             if(count($questionList) === 0){
-                throw new Exception("設問が一問も、登録されていません。");
+                throw new Exception("設問が一問も登録されていません。");
                 exit();
             }
+            $questionNumberList = array();
             foreach($questionList as $key => $value){
-                $questionList[$key]["choice_list"] = json_decode($questionList[$key]["choice_list"], true);
-                if(json_last_error() !== JSON_ERROR_NONE){
-                    throw new Exception("「設問番号{$questionList[$key]["question_id"]}」の選択肢データの復号化に失敗しました。");
-                }
-                $questionList[$key]["choice_number"] = json_decode($questionList[$key]["choice_number"], true);
-                if(json_last_error() !== JSON_ERROR_NONE){
-                    throw new Exception("「設問番号{$questionList[$key]["question_id"]}」の選択肢の回答データの復号化に失敗しました。");
-                }
+                $questionNumberList[] = $value["question_id"];
             }
             //URLパラメータの$page変数がnullの時のみ問題のシャッフルを行う。
             if($page === null){
-                QuestionFormat::escape($questionList);
-                shuffle($questionList);
-                $questionNumberList = array();
-                foreach($questionList as $key => $value){
-                    $questionNumberList[] = $value["question_id"];
-                }
+                shuffle($questionNumberList);
                 Session::set("questionNumberList", $questionNumberList);
                 $page = 0;
             }
             $questionNumberList = Session::get("questionNumberList");
             $nowNumber = $questionNumberList[$page];
-            $question = Model_Question::find($nowNumber);
-            $questionList = array();
-            $questionList[] = $question->to_array();
-            foreach($questionList as $key => $value){
-                $questionList[$key]["choice_list"] = json_decode($questionList[$key]["choice_list"], true);
-                if(json_last_error() !== JSON_ERROR_NONE){
-                    throw new Exception("「設問番号{$questionList[$key]["question_id"]}」の選択肢データの復号化に失敗しました。");
-                }
-                $questionList[$key]["choice_number"] = json_decode($questionList[$key]["choice_number"], true);
-                if(json_last_error() !== JSON_ERROR_NONE){
-                    throw new Exception("「設問番号{$questionList[$key]["question_id"]}」の選択肢の回答データの復号化に失敗しました。");
-                }
+
+            $question = Model_Question::find($nowNumber, array("select" => "*"));
+            $question = $question->to_array();
+            $question["choice_list"] = json_decode($question["choice_list"], true);
+            if(json_last_error() !== JSON_ERROR_NONE){
+                throw new Exception("「設問番号{$questionList[$key]["question_id"]}」の選択肢データの復号化に失敗しました。");
             }
-            QuestionFormat::escape($questionList);
-            $questionList = QuestionFormat::format($questionList);
+            $question["choice_number"] = json_decode($question["choice_number"], true);
+            if(json_last_error() !== JSON_ERROR_NONE){
+                throw new Exception("「設問番号{$questionList[$key]["question_id"]}」の選択肢の回答データの復号化に失敗しました。");
+            }
+            $temp = array($question);
+            QuestionFormat::escape($temp);
+            $question = QuestionFormat::format($temp);
             $data["projectId"] = $projectId;
-            $data["questionList"] = $questionList[0];
+            $data["questionList"] = $question[0];
             $data["nowNumber"] = $nowNumber;
             $data["page"] = $page;
             $data["questionNumberList"] = $questionNumberList;
             $this->template->title = "ユーザーページ/既存設問文編集";
             $this->template->content = View::forge("admin/question/oneQuestion", $data, false);
         }catch(Exception $e){
-            $data["errorMessage"] = $e->getMessage() . $e->getLine();
+            $data["errorMessage"] = $e->getMessage() . "<" . $e->getLine() . ":" . $e->getFile() . ">" ;
             $this->template->title = "ユーザーページ/設問文回答中エラー発生";
             $this->template->content = View::forge("error/index", $data);
         }
