@@ -16,6 +16,7 @@ class Controller_Admin extends Controller_Template
         $this->userId = $temp["userId"];
         $this->userName = $temp["username"];
         $this->template->title = "ユーザーページ/初期ページ";
+        $this->template->footer = "独学.com Copyright 1000_VICKY All Rights Reserved.";
     }
 
     public function action_index()
@@ -330,6 +331,9 @@ class Controller_Admin extends Controller_Template
     public function action_modifyQuestion($projectId = null, $questionId = null, $flat = null)
     {
         try{
+            //リファラーを取得
+            $httpReferer = Input::server("HTTP_REFERER");
+            Session::set("referer", $httpReferer);
             $data = array();
             $choiceList = array();
             //projectトークンを使って管理権限を検証する。
@@ -389,7 +393,6 @@ class Controller_Admin extends Controller_Template
             foreach(Input::post() as $key => $value){
                 $input[$key] = Clean::cleaning($value);
             }
-            print_r($input);
             //選択肢の作成
             $tempList = array();
             $i = 0;
@@ -505,7 +508,11 @@ class Controller_Admin extends Controller_Template
             $model = Model_Question::find($input["questionId"]);
             $model->set($insertData);
             if($model->save() === true){
-                Response::redirect("/admin/editQuestion/{$input["projectId"]}");
+                if(strlen(Session::get("referer")) > 0){
+                    Response::redirect(Session::get("referer"));
+                } else {
+                    Response::redirect("/admin/editQuestion/{$input["projectId"]}");
+                }
                 exit();
             }
             throw new Exception("既存設問の更新作業に失敗しました。");
@@ -517,58 +524,27 @@ class Controller_Admin extends Controller_Template
         }
     }
     /**
-     * 問題閲覧ページ
-     * @param int $projectId
-     */
-    public function action_viewQuestion($projectId = null)
-    {
-        try{
-            $data = array();
-            $checkProjectId = Model_Project::checkProjectId($this->userId, $projectId);
-            if($checkProjectId !== true){
-                throw new Exception("不正なprojectIdです。");
-            }
-            $questionList = Model_Question::find("all", array("where" => array("project_id" => $projectId, "delete_flag" => 0)));
-            $questionList = Model_Question::toArray($questionList);
-            foreach($questionList as $key => $value){
-                $questionList[$key]["choice_list"] = json_decode($questionList[$key]["choice_list"], true);
-                if(json_last_error() !== JSON_ERROR_NONE){
-                    throw new Exception("「設問番号{$questionList[$key]["question_id"]}」の選択肢データの復号化に失敗しました。");
-                }
-                $questionList[$key]["choice_number"] = json_decode($questionList[$key]["choice_number"], true);
-                if(json_last_error() !== JSON_ERROR_NONE){
-                    throw new Exception("「設問番号{$questionList[$key]["question_id"]}」の選択肢の回答データの復号化に失敗しました。");
-                }
-            }
-            QuestionFormat::escape($questionList);
-            shuffle($questionList);
-            $data["questionList"] = QuestionFormat::format($questionList);
-            $this->template->title = "ユーザーページ/既存設問文編集";
-            $this->template->content = View::forge("admin/question/viewQuestion", $data, false);
-        }catch(Exception $e){
-            $data["errorMessage"] = $e->getMessage();
-            $this->template->title = "ユーザーページ/設問文回答中エラー発生";
-            $this->template->content = View::forge("error/index", $data);
-        }
-    }
-    /**
      * 問題閲覧を一問ずつ行っていく
      */
     public function action_oneQuestion($projectId = null, $page = null)
     {
         try{
+            Session::delete("referer");
             $data = array();
             $checkProjectId = Model_Project::checkProjectId($this->userId, $projectId);
             if($checkProjectId !== true){
                 throw new Exception("不正なprojectIdです。");
             }
             $questionList = Model_Question::find("all", array(
-                                                            "where" => array(
-                                                                            "project_id" => $projectId, "delete_flag" => 0),
-                                                                            "order_by" => array("question_id" => "asc")
-                                                            )
+                    "where" => array( "project_id" => $projectId, "delete_flag" => 0),
+                    "order_by" => array("question_id" => "asc")
+                )
             );
             $questionList = Model_Question::toArray($questionList);
+            if(count($questionList) === 0){
+                throw new Exception("設問が一問も、登録されていません。");
+                exit();
+            }
             foreach($questionList as $key => $value){
                 $questionList[$key]["choice_list"] = json_decode($questionList[$key]["choice_list"], true);
                 if(json_last_error() !== JSON_ERROR_NONE){
@@ -590,8 +566,8 @@ class Controller_Admin extends Controller_Template
                 Session::set("questionNumberList", $questionNumberList);
                 $page = 0;
             }
-            $temp = Session::get("questionNumberList");
-            $nowNumber = $temp[$page];
+            $questionNumberList = Session::get("questionNumberList");
+            $nowNumber = $questionNumberList[$page];
             $question = Model_Question::find($nowNumber);
             $questionList = array();
             $questionList[] = $question->to_array();
@@ -611,7 +587,7 @@ class Controller_Admin extends Controller_Template
             $data["questionList"] = $questionList[0];
             $data["nowNumber"] = $nowNumber;
             $data["page"] = $page;
-            $data["questionNumberList"] = $temp;
+            $data["questionNumberList"] = $questionNumberList;
             $this->template->title = "ユーザーページ/既存設問文編集";
             $this->template->content = View::forge("admin/question/oneQuestion", $data, false);
         }catch(Exception $e){

@@ -8,7 +8,7 @@ class Controller_Top extends Controller_Template
         parent::before();
         $this->template->mainStyle = "main.css";
         $this->template->mainJs = "jquery.php";
-        $this->template->footer = "";
+        $this->template->footer = "独学.com Copyright 1000_VICKY All Rights Reserved.";
     }
     public function action_index()
     {

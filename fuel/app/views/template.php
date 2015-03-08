@@ -35,11 +35,22 @@ function cancel_tab(e) {
 }
 */
 ?>
+/**
+ * グーグルアナリティクス
+ * トラッキングコード
+ */
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-60506428-1', 'auto');
+  ga('send', 'pageview');
 </script>
 </head>
 <body>
 <div id="wrapper">
-        <div class="btn btn-success btn-group-justified projectBox">
+        <div id="title_header" class="">
             <h1>独学.com|<?php print($subHeader); ?>|docgack.com</h1>
         </div>
         <div id="mainHeader">
@@ -51,6 +62,8 @@ function cancel_tab(e) {
         <?php echo($content); ?>
 
 </div><!--/#wrapper -->
-<div id="footer"><?php echo($footer); ?></div>
+<div id="footer" class="centeringBox">
+    <address><?php echo($footer); ?></address>
+</div>
 </body>
 </html>

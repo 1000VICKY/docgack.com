@@ -4,8 +4,8 @@
         <?php
         foreach($projectList as $key =>$value){
         ?>
-        <p><a class="toBlock" href="/admin/viewQuestion/<?php print($value["project_id"]); ?>" >■<?php print($value["project_name"]); ?>(一括)</a></p>
-        <p><a class="toBlock" href="/admin/oneQuestion/<?php print($value["project_id"]); ?>" >■<?php print($value["project_name"]); ?>(一問ずつ)</a></p>
+        <!--<p><a class="toBlock" href="/admin/viewQuestion/<?php print($value["project_id"]); ?>" >■<?php print($value["project_name"]); ?>(一括)</a></p>-->
+        <p><a class="toBlock" href="/admin/oneQuestion/<?php print($value["project_id"]); ?>" >■<?php print($value["project_name"]); ?></a></p>
         <?php } ?>
     </div>
 </div>
