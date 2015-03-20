@@ -35,18 +35,17 @@
                 <input type="button" class="btn btn-default btn-group-justified projectBox getExplanationText" value="解説を見る" />
             </form>
             <div class="displayExplanationText"></div>
-            <a class="btn btn-default btn-group-justified projectBox getExplanationText" href="/admin/modifyQuestion/<?php print($projectId); ?>/<?php print($questionList["question_id"]); ?>" >この設問を編集する</a>
         </div>
     </div>
 </div>
 <div class="col-md-6 margin-bottom margin-top">
     <?php if((int)$page > 0){ ?>
-    <a href="/admin/oneQuestion/<?php print($projectId); ?>/<?php print($page - 1); ?>" class="btn btn-primary btn-group-justified"><<前へ</a>
+    <a href="/open/index/<?php print($projectId); ?>/<?php print($page - 1); ?>" class="btn btn-primary btn-group-justified"><<前へ</a>
     <?php } ?>
 </div>
 <div class="col-md-6 margin-bottom margin-top">
     <?php if($page + 1 <=  count($questionNumberList) -1) { ?>
-    <a href="/admin/oneQuestion/<?php print($projectId); ?>/<?php print($page + 1); ?>" class="btn btn-primary btn-group-justified">次へ>></a>
+    <a href="/open/index/<?php print($projectId); ?>/<?php print($page + 1); ?>" class="btn btn-primary btn-group-justified">次へ>></a>
     <?php } ?>
 </div>
 <div class="clearfix"></div>

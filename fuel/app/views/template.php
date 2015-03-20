@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 <meta name="keywords" content="独学,資格勉強,docgack.com,webサービス">
 <meta name="description" content="資格・認定試験問題作成WEBサービス">
-<title>独学.com|docgack.com|<?php echo($title); ?></title>
+<title>独学.com<?php echo($title); ?></title>
 <?php echo Asset::css("bootstrap.min.css"); ?>
 <?php echo Asset::css("main.css"); ?>
 <?php echo Asset::js("jquery.js"); ?>
@@ -51,7 +51,7 @@ function cancel_tab(e) {
 <body>
 <div id="wrapper">
         <div id="title_header" class="">
-            <h1>独学.com|docgack.com</h1>
+            <h1>独学.com</h1>
         </div>
         <div id="mainHeader">
             <h2>
@@ -63,6 +63,7 @@ function cancel_tab(e) {
 
 </div><!--/#wrapper -->
 <div id="footer" class="centeringBox">
+    <p><img src="https://www.ssl-store.jp/system/images/seal/rapidssl_seal.gif" ></p>
     <address><?php echo($footer); ?></address>
 </div>
 </body>

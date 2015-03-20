@@ -16,7 +16,7 @@ class Controller_Admin extends Controller_Template
         $this->userId = $temp["userId"];
         $this->userName = $temp["username"];
         $this->template->title = "ユーザーページ/初期ページ";
-        $this->template->footer = "独学.com|docgack.com Copyright 1000_VICKY All Rights Reserved.";
+        $this->template->footer = "Copyright 独学.com|docgack.com All Rights Reserved.";
     }
 
     public function action_index()
@@ -29,7 +29,7 @@ class Controller_Admin extends Controller_Template
             $this->template->title = "ユーザーページ/あなたのMyページ";
             $this->template->content = View::forge("admin/index", $data);
         }catch(Exception $e){
-            $data["errorMessage"] = $e->getMessage();
+            $data["errorMessage"] = $e->getMessage() . "<" . $e->getLine() . ":" . $e->getFile() . ">" ;
             $this->template->content = View::forge("error/index", $data);
         }
     }
@@ -79,7 +79,7 @@ class Controller_Admin extends Controller_Template
             }
             throw new Exception("新規プロジェクトの追加に失敗しました。");
         }catch(Exception $e){
-            $data["errorMessage"] = $e->getMessage();
+            $data["errorMessage"] = $e->getMessage() . "<" . $e->getLine() . ":" . $e->getFile() . ">" ;
             $this->template->content = View::forge("error/index", $data);
         }
     }
@@ -107,7 +107,7 @@ class Controller_Admin extends Controller_Template
             $this->template->title = "ユーザーページ/新規プロジェクト作成";
             $this->template->content = View::forge("admin/project/editProject", $data);
         }catch(Exception $e){
-            $data["errorMessage"] = $e->getMessage() . $e->getLine();
+            $data["errorMessage"] = $e->getMessage() . "<" . $e->getLine() . ":" . $e->getFile() . ">" ;
             $this->template->title = "ユーザーページ/設問文新規作成時エラー発生";
             $this->template->content = View::forge("error/index", $data);
         }
@@ -135,7 +135,7 @@ class Controller_Admin extends Controller_Template
             Response::redirect("/admin/index");
             exit();
         }catch(Exception $e){
-            $data["errorMessage"] = $e->getMessage();
+            $data["errorMessage"] = $e->getMessage() . "<" . $e->getLine() . ":" . $e->getFile() . ">" ;
             $this->template->title = "ユーザーページ/設問文新規作成時エラー発生";
             $this->template->content = View::forge("error/index", $data);
         }
@@ -182,7 +182,7 @@ class Controller_Admin extends Controller_Template
             $this->template->title = "ユーザーページ/新規設問文作成";
             $this->template->content = View::forge("admin/question/newQuestion", $data);
         }catch(Exception $e){
-            $data["errorMessage"] = $e->getMessage();
+            $data["errorMessage"] = $e->getMessage() . "<" . $e->getLine() . ":" . $e->getFile() . ">" ;
             $this->template->title = "ユーザーページ/設問文新規作成時エラー発生";
             $this->template->content = View::forge("error/index", $data);
         }
@@ -243,7 +243,7 @@ class Controller_Admin extends Controller_Template
             $this->template->title = "ユーザーページ/新規設問文回答の選択";
             $this->template->content = View::forge("admin/question/checkQuestion", $data);
         }catch(Exception $e){
-            $data["errorMessage"] = $e->getMessage(). $e->getLine();
+            $data["errorMessage"] = $e->getMessage() . "<" . $e->getLine() . ":" . $e->getFile() . ">" ;
             $this->template->title = "ユーザーページ/設問文編集時エラー発生";
             $this->template->content = View::forge("error/index", $data);
         }
@@ -301,7 +301,7 @@ class Controller_Admin extends Controller_Template
             }
             throw new Exception("新規設問文の追加に失敗しました。");
         }catch(Exception $e){
-            $data["errorMessage"] = $e->getMessage();
+            $data["errorMessage"] = $e->getMessage() . "<" . $e->getLine() . ":" . $e->getFile() . ">" ;
             $this->template->title = "ユーザーページ/設問文編集時エラー発生";
             $this->template->content = View::forge("error/index", $data);
         }
@@ -322,7 +322,7 @@ class Controller_Admin extends Controller_Template
             $this->template->title = "ユーザーページ/既存設問文編集";
             $this->template->content = View::forge("admin/question/editQuestion", $data);
         }catch(Exception $e){
-            $data["errorMessage"] = $e->getMessage();
+            $data["errorMessage"] = $e->getMessage() . "<" . $e->getLine() . ":" . $e->getFile() . ">" ;
             $this->template->title = "ユーザーページ/設問文編集時エラー発生";
             $this->template->content = View::forge("error/index", $data);
         }
@@ -331,9 +331,9 @@ class Controller_Admin extends Controller_Template
     public function action_modifyQuestion($projectId = null, $questionId = null, $flat = null)
     {
         try{
-            //リファラーを取得
-            $httpReferer = Input::server("HTTP_REFERER");
-            Session::set("referer", $httpReferer);
+            //リファラーをセット
+            $referer = Input::server("HTTP_REFERER");
+            Session::set("referer", $referer);
             $data = array();
             $choiceList = array();
             //projectトークンを使って管理権限を検証する。
@@ -380,7 +380,7 @@ class Controller_Admin extends Controller_Template
             $this->template->subHeader = "独学用学習システム/既存設問の修正";
             $this->template->content = View::forge("admin/question/modifyQuestion", $data, false);
         }catch(Exception $e){
-            $data["errorMessage"] = $e->getMessage();
+            $data["errorMessage"] = $e->getMessage() . "<" . $e->getLine() . ":" . $e->getFile() . ">" ;
             $this->template->title = "ユーザーページ/設問文編集時エラー発生";
             $this->template->content = View::forge("error/index", $data);
         }
@@ -459,7 +459,7 @@ class Controller_Admin extends Controller_Template
             $this->template->title = "ユーザーページ/新規設問文回答の選択";
             $this->template->content = View::forge("admin/question/modifyCheckQuestion", $data);
         }catch(Exception $e){
-            $data["errorMessage"] = $e->getMessage();
+            $data["errorMessage"] = $e->getMessage() . "<" . $e->getLine() . ":" . $e->getFile() . ">" ;
             $this->template->title = "ユーザーページ/設問文編集時エラー発生";
             $this->template->content = View::forge("error/index", $data);
         }
@@ -518,7 +518,7 @@ class Controller_Admin extends Controller_Template
             throw new Exception("既存設問の更新作業に失敗しました。");
             exit();
         }catch(Exception $e){
-            $data["errorMessage"] = $e->getMessage();
+            $data["errorMessage"] = $e->getMessage() . "<" . $e->getLine() . ":" . $e->getFile() . ">" ;
             $this->template->title = "ユーザーページ/設問文編集時エラー発生";
             $this->template->content = View::forge("error/index", $data);
         }
@@ -535,14 +535,10 @@ class Controller_Admin extends Controller_Template
             if($checkProjectId !== true){
                 throw new Exception("不正なprojectIdです。");
             }
-            $questionList = Model_Question::query()
-                ->select("*")
-                ->where("project_id", "=", $projectId)
-                ->where("delete_flag", "=", 0)
-                ->get();
+            $questionList = Model_Question::query()->where("project_id", "=", $projectId)->where("delete_flag", "=", 0)->get();
             $questionList = Model_Question::toArray($questionList);
             if(count($questionList) === 0){
-                throw new Exception("設問が一問も登録されていません。");
+                throw new Exception("設問が一問も登録されていません。<br />");
                 exit();
             }
             $questionNumberList = array();
@@ -555,10 +551,11 @@ class Controller_Admin extends Controller_Template
                 Session::set("questionNumberList", $questionNumberList);
                 $page = 0;
             }
+            Session::set("referer", "/admin/oneQuestion/{$projectId}/{$page}");
             $questionNumberList = Session::get("questionNumberList");
             $nowNumber = $questionNumberList[$page];
 
-            $question = Model_Question::find($nowNumber, array("select" => "*"));
+            $question = Model_Question::find($nowNumber);
             $question = $question->to_array();
             $question["choice_list"] = json_decode($question["choice_list"], true);
             if(json_last_error() !== JSON_ERROR_NONE){
@@ -581,7 +578,7 @@ class Controller_Admin extends Controller_Template
         }catch(Exception $e){
             $data["errorMessage"] = $e->getMessage() . "<" . $e->getLine() . ":" . $e->getFile() . ">" ;
             $this->template->title = "ユーザーページ/設問文回答中エラー発生";
-            $this->template->content = View::forge("error/index", $data);
+            $this->template->content = View::forge("error/index", $data, false);
         }
     }
 
@@ -623,7 +620,7 @@ class Controller_Admin extends Controller_Template
                 $this->template->content = View::forge("admin/question/deleteCheck", $data);
             }
         }catch(Exception $e){
-            $data["errorMessage"] = $e->getMessage();
+            $data["errorMessage"] = $e->getMessage() . "<" . $e->getLine() . ":" . $e->getFile() . ">" ;
             $this->template->title = "ユーザーページ/設問文回答中エラー発生";
             $this->template->content = View::forge("error/index", $data);
         }
@@ -640,7 +637,7 @@ class Controller_Admin extends Controller_Template
                 throw new Exception("ログアウトに失敗しました。");
             }
         }catch(Exception $e){
-            $data["errorMessage"] = $e->getMessage();
+            $data["errorMessage"] = $e->getMessage() . "<" . $e->getLine() . ":" . $e->getFile() . ">" ;
             $this->template->title = "ユーザーページ/設問文回答中エラー発生";
             $this->template->content = View::forge("error/index", $data);
         }

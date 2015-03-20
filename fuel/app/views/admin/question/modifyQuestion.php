@@ -29,10 +29,20 @@
             <p><input class="form-control input-lg" value="<?php print(implode(",", $questionData[0]["choice_number"])); ?>" type="text" readonly="readonly" ></p>
             <?php } ?>
             <p>▼新規設問文の選択肢一覧入力(※空欄は無視されます。)</p>
-            <?php for($i = 0 ; $i < $defaultSelectCount; $i++){  ?>
+            <?php for($i = 0 ; $i < $defaultSelectCount; $i++){
+                    if(in_array($i, $questionData[0]["choice_number"])){
+                        $nowNumber = "btn-primary";
+                    }else {
+                        $nowNumber = "";
+                    }
+            ?>
                 <div class="row margin-bottom">
-                    <div class="col-md-1 margin-bottom"><input class="form-control input-lg" type="text" readonly="readonly" value="<?php print($i); ?>" /></div>
-                    <div class="col-md-11"><textarea class="form-control input-lg" name="choiceList[]" rows="3"><?php print($questionData[0]["choice_list"][$i]["choiceText"]); ?></textarea></div>
+                    <div class="col-md-1 margin-bottom">
+                        <input class="form-control input-lg" type="text" readonly="readonly" value="<?php print($i); ?>" />
+                    </div>
+                    <div class="col-md-11">
+                        <textarea class="form-control input-lg <?php print($nowNumber); ?>" name="choiceList[]" rows="3"><?php print($questionData[0]["choice_list"][$i]["choiceText"]); ?></textarea>
+                    </div>
                 </div>
             <?php } ?>
             <p><a href="/admin/modifyQuestion/<?php print($projectId); ?>/<?php print($questionId); ?>/up">▲選択肢を増やす</a></p>
