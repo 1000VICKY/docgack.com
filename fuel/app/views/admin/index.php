@@ -1,4 +1,4 @@
-<div class="panel panel-info projectBox">
+<div class="panel panel-primary projectBox">
     <div class="panel-heading">プロジェクト一覧/問題一覧へ</div>
     <div class="panel-body">
         <?php
@@ -9,7 +9,7 @@
         <?php } ?>
     </div>
 </div>
-<div class="panel panel-info projectBox">
+<div class="panel panel-primary projectBox">
     <div class="panel-heading">プロジェクト編集/編集画面へ</div>
     <div class="panel-body">
         <?php

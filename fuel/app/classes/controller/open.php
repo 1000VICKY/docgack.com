@@ -69,11 +69,11 @@ class Controller_Open extends Controller_Template
             $data["nowNumber"] = $nowNumber;
             $data["page"] = $page;
             $data["questionNumberList"] = $questionNumberList;
-            $this->template->title = "ユーザーページ/既存設問文編集";
+            $this->template->title = "公開中プロジェクト";
             $this->template->content = View::forge("open/index", $data, false);
         }catch(Exception $e){
             $data["errorMessage"] = $e->getMessage() . "<" . $e->getLine() . ":" . $e->getFile() . ">" ;
-            $this->template->title = "ユーザーページ/設問文回答中エラー発生";
+            $this->template->title = "設問文回答中エラー発生";
             $this->template->content = View::forge("error/index", $data, false);
         }
     }

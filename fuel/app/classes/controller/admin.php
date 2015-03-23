@@ -11,19 +11,27 @@ class Controller_Admin extends Controller_Template
             Response::redirect("/");
             exit();
         }
-        header("Content-type: text/html;charset=utf-8");
         $temp = Session::get();
         $this->userId = $temp["userId"];
         $this->userName = $temp["username"];
-        $this->template->title = "ユーザーページ/初期ページ";
-        $this->template->footer = "Copyright 独学.com|docgack.com All Rights Reserved.";
     }
 
     public function action_index()
     {
         try{
             $data = array();
-            $projectList = Model_Project::find("all", array("where" => array("user_id" => $this->userId)));
+            /**
+            * ログインユーザーが作成したプロジェクト且つ
+            * delete_flagが[0]のもののみを取得
+            */
+            $projectList = Model_Project::find("all", array(
+                "where" =>
+                    array(
+                        "user_id" => $this->userId,
+                        "delete_flag" => 0
+                    )
+                )
+            );
             $res = Model_Project::toArray($projectList);
             $data["projectList"] = $res;
             $this->template->title = "ユーザーページ/あなたのMyページ";
@@ -44,6 +52,42 @@ class Controller_Admin extends Controller_Template
             $this->template->title = "ユーザーページ/新規プロジェクト作成";
             $this->template->content = View::forge("admin/project/newProject", $data);
         }catch(Exception $e){
+            $this->template->content = View::forge("error/index", $data);
+        }
+    }
+    public function action_deleteProject($projectId = null)
+    {
+        try{
+            $data = array();
+            if(strtoupper(Input::method()) === "GET"){
+                if(is_numeric($projectId) !== true){
+                    throw new Exception("不正なプロジェクトです。");
+                }
+                $data["projectId"] = $projectId;
+                $this->template->title = "ユーザーページ/指定したプロジェクトの削除";
+                $this->template->content = View::forge("admin/project/deleteProject", $data);
+            } elseif (strtoupper(Input::method()) === "POST"){
+                //POSTリクエスト時
+                $projectId = Input::post("projectId");
+                $deleteFlag = 1;
+                //既存プロジェクトの論理削除
+                $model = Model_Project::find($projectId);
+                $updateData = array(
+                    "delete_flag" => $deleteFlag,
+                    "update_time" => $this->dateObj->format("Y-m-d H:i:s"),
+                );
+                $res = $model->set($updateData);
+                $res = $model->save();
+                if(!$res){
+                    throw new Exception("プロジェクトの削除に失敗しました。");
+                    exit();
+                }
+                Response::redirect("/admin/index");
+                exit();
+            }
+        }catch(Exception $e){
+            $data["errorMessage"] = $e->getMessage() . "<" . $e->getLine() . ":" . $e->getFile() . ">" ;
+            $this->template->title = "ユーザーページ/設問文新規作成時エラー発生";
             $this->template->content = View::forge("error/index", $data);
         }
     }
@@ -317,6 +361,10 @@ class Controller_Admin extends Controller_Template
             $data = array();
             $questionList = Model_Question::find("all", array("where" => array("project_id" => $projectId, "delete_flag" => 0),"order_by" => array("question_id" =>  "asc")));
             $questionList = Model_Question::toArray($questionList);
+            if(count($questionList) === 0){
+                throw new Exception("現在、登録されている設問が一件もありません。");
+                exit();
+            }
             $data["questionList"] = $questionList;
             $data["projectId"] = $projectId;
             $this->template->title = "ユーザーページ/既存設問文編集";

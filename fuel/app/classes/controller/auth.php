@@ -10,7 +10,7 @@ class Controller_Auth extends Controller_Template
         $this->template->mainJs = "jquery.php";
         $this->template->footer = "";
         $this->template->title = "認証処理/イニシャライズ";
-        $this->template->footer = "独学.com Copyright 1000_VICKY All Rights Reserved.";
+        $this->template->footer = "独学.com Copyright 独学.com All Rights Reserved.";
     }
     /**
      * /auth/indexへのアクセスは

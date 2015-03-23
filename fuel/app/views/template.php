@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<meta name="keywords" content="独学,資格勉強,docgack.com,webサービス">
+<meta name="keywords" content="独学.com,独学,資格勉強,docgack.com,webサービス">
 <meta name="description" content="資格・認定試験問題作成WEBサービス">
-<title>独学.com<?php echo($title); ?></title>
+<title>独学.com/<?php echo($title); ?></title>
 <?php echo Asset::css("bootstrap.min.css"); ?>
 <?php echo Asset::css("main.css"); ?>
 <?php echo Asset::js("jquery.js"); ?>
