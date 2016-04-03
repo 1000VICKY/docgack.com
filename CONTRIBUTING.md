@@ -1,185 +1,95 @@
-Contributing to FuelPHP
-=======================
+# Contributing to CodeIgniter
 
-Any person or company wanting to contribute to FuelPHP should follow the
-following rules to increase the chance of the contribution being accepted.
 
-Sign your Work
---------------
+CodeIgniter is a community driven project and accepts contributions of code and documentation from the community. These contributions are made in the form of Issues or [Pull Requests](http://help.github.com/send-pull-requests/) on the [CodeIgniter repository](https://github.com/bcit-ci/CodeIgniter>) on GitHub.
 
-We require that all contributors "sign-off" on their commits.  This
-certifies that the contribution is your original work, or you have rights to
-submit it under the same license, or a compatible license.
+Issues are a quick way to point out a bug. If you find a bug or documentation error in CodeIgniter then please check a few things first:
 
-Any contribution which contains commits that are not Signed-Off will not be
-accepted.
+1. There is not already an open Issue
+2. The issue has already been fixed (check the develop branch, or look for closed Issues)
+3. Is it something really obvious that you can fix yourself?
 
-To sign off on a commit you simply use the `--signoff` (or `-s`) option when
-committing your changes:
+Reporting issues is helpful but an even better approach is to send a Pull Request, which is done by "Forking" the main repository and committing to your own copy. This will require you to use the version control system called Git.
 
-    $ git commit -s -m "Adding a new widget driver for cogs."
+## Guidelines
 
-This will append the following to your commit message:
+Before we look into how, here are the guidelines. If your Pull Requests fail
+to pass these guidelines it will be declined and you will need to re-submit
+when you’ve made the changes. This might sound a bit tough, but it is required
+for us to maintain quality of the code-base.
 
-    Signed-off-by: Your Name <your@email.com>
+### PHP Style
 
-By doing this you certify the below:
+All code must meet the [Style Guide](http://codeigniter.com/user_guide/general/styleguide.html), which is
+essentially the [Allman indent style](http://en.wikipedia.org/wiki/Indent_style#Allman_style), underscores and readable operators. This makes certain that all code is the same format as the existing code and means it will be as readable as possible.
 
-    Developer's Certificate of Origin 1.1
+### Documentation
 
-    By making a contribution to this project, I certify that:
+If you change anything that requires a change to documentation then you will need to add it. New classes, methods, parameters, changing default values, etc are all things that will require a change to documentation. The change-log must also be updated for every change. Also PHPDoc blocks must be maintained.
 
-    (a) The contribution was created in whole or in part by me and I
-        have the right to submit it under the open source license
-        indicated in the file; or
+### Compatibility
 
-    (b) The contribution is based upon previous work that, to the best
-        of my knowledge, is covered under an appropriate open source
-        license and I have the right under that license to submit that
-        work with modifications, whether created in whole or in part
-        by me, under the same open source license (unless I am
-        permitted to submit under a different license), as indicated
-        in the file; or
+CodeIgniter recommends PHP 5.4 or newer to be used, but it should be
+compatible with PHP 5.2.4 so all code supplied must stick to this
+requirement. If PHP 5.3 (and above) functions or features are used then
+there must be a fallback for PHP 5.2.4.
 
-    (c) The contribution was provided directly to me by some other
-        person who certified (a), (b) or (c) and I have not modified
-        it.
+### Branching
 
-    (d) I understand and agree that this project and the contribution
-        are public and that a record of the contribution (including all
-        personal information I submit with it, including my sign-off) is
-        maintained indefinitely and may be redistributed consistent with
-        this project or the open source license(s) involved.
+CodeIgniter uses the [Git-Flow](http://nvie.com/posts/a-successful-git-branching-model/) branching model which requires all pull requests to be sent to the "develop" branch. This is
+where the next planned version will be developed. The "master" branch will always contain the latest stable version and is kept clean so a "hotfix" (e.g: an emergency security patch) can be applied to master to create a new version, without worrying about other features holding it up. For this reason all commits need to be made to "develop" and any sent to "master" will be closed automatically. If you have multiple changes to submit, please place all changes into their own branch on your fork.
 
-#### Quick Tip
+One thing at a time: A pull request should only contain one change. That does not mean only one commit, but one change - however many commits it took. The reason for this is that if you change X and Y but send a pull request for both at the same time, we might really want X but disagree with Y, meaning we cannot merge the request. Using the Git-Flow branching model you can create new branches for both of these features and send two requests.
 
-If you would like to Sign-Off on all of your commits automatically (not
-recommended unless you are 100% sure).  To do this, you can simply create
-an alias for `git commit -s`:
+### Signing
 
-    $ git config --global alias.cs 'commit -s'
+You must sign your work, certifying that you either wrote the work or otherwise have the right to pass it on to an open source project. git makes this trivial as you merely have to use `--signoff` on your commits to your CodeIgniter fork.
 
-If you wish to only include this for your current repository, simply leave
-the `--global` option off:
+`git commit --signoff`
 
-    $ git config alias.cs 'commit -s'
+or simply
 
-Now you can Sign-Off on all of your commits if you commit with `git cs`.
+`git commit -s`
 
-Creating and Submitting Contributions
--------------------------------------
+This will sign your commits with the information setup in your git config, e.g.
 
-FuelPHP uses the Git version control system and hosts it's repositories on
-GitHub.  All contributions are submitted using the GitHub Pull Request
-system.  No contributions are accepted via email or the community forums.
+`Signed-off-by: John Q Public <john.public@example.com>`
 
-FuelPHP takes advantage of Git submodules.  They allow for the separation of
-the components and packages into individual repositories, making it easier
-for development and upgrades.
+If you are using [Tower](http://www.git-tower.com/) there is a "Sign-Off" checkbox in the commit window. You could even alias git commit to use the `-s` flag so you don’t have to think about it.
 
-### Setting Up Your Local Environment
+By signing your work in this manner, you certify to a "Developer's Certificate of Origin". The current version of this certificate is in the `DCO.txt` file in the root of this repository.
 
-To get started, you first need to Fork the repository you wish to contribute
-to on GitHub by visiting the the repository GitHub and clicking the "Fork"
-button.
 
-**Note:** We will assume throughout this document that you are contributing
-to the _core_ repository.
+## How-to Guide
 
-Once you have setup your Fork you are ready to clone it and start working:
+There are two ways to make changes, the easy way and the hard way. Either way you will need to [create a GitHub account](https://github.com/signup/free).
 
-1.  Start by cloning your Fork:
+Easy way GitHub allows in-line editing of files for making simple typo changes and quick-fixes. This is not the best way as you are unable to test the code works. If you do this you could be introducing syntax errors, etc, but for a Git-phobic user this is good for a quick-fix.
 
-        $ git clone git@github.com:USERNAME/core.git
+Hard way The best way to contribute is to "clone" your fork of CodeIgniter to your development area. That sounds like some jargon, but "forking" on GitHub means "making a copy of that repo to your account" and "cloning" means "copying that code to your environment so you can work on it".
 
-2.  Next you need to add the original repository as a new remote named
-`upstream`:
+1. Set up Git (Windows, Mac & Linux)
+2. Go to the CodeIgniter repo
+3. Fork it
+4. Clone your CodeIgniter repo: git@github.com:<your-name>/CodeIgniter.git
+5. Checkout the "develop" branch At this point you are ready to start making changes. 
+6. Fix existing bugs on the Issue tracker after taking a look to see nobody else is working on them.
+7. Commit the files
+8. Push your develop branch to your fork
+9. Send a pull request [http://help.github.com/send-pull-requests/](http://help.github.com/send-pull-requests/)
 
-        $ cd core
-        $ git remote add upstream git://github.com/fuel/core.git
-        $ git fetch upstream
+The Reactor Engineers will now be alerted about the change and at least one of the team will respond. If your change fails to meet the guidelines it will be bounced, or feedback will be provided to help you improve it.
 
-### Developing with Contribution in Mind
+Once the Reactor Engineer handling your pull request is happy with it they will merge it into develop and your patch will be part of the next release.
 
-When developing with the intent for contribution, there are a few things to
-keep in mind:
+### Keeping your fork up-to-date
 
-1.  All contributions must be made on the appropriate branch.  Most of the
-    time, this will be the `develop` branch for the appropriate version.
+Unlike systems like Subversion, Git can have multiple remotes. A remote is the name for a URL of a Git repository. By default your fork will have a remote named "origin" which points to your fork, but you can add another remote named "codeigniter" which points to `git://github.com/bcit-ci/CodeIgniter.git`. This is a read-only remote but you can pull from this develop branch to update your own.
 
-    The best way to do this is to make a branch off of the current version's
-    `develop` branch:
+If you are using command-line you can do the following:
 
-        $ git checkout BRANCH_NAME 1.8/develop
+1. `git remote add codeigniter git://github.com/bcit-ci/CodeIgniter.git`
+2. `git pull codeigniter develop`
+3. `git push origin develop`
 
-    **Note:** If the contribution is submitted to the wrong branch, you will
-    be asked to re-submit on the correct branch.
-
-2.  Ensure you follow the FuelPHP Coding Standards.
-3.  Unit Tests should be submitted with the contribution if applicable.
-4.  A separate complimentary contribution should be submitted to the `doc`
-    repository containing the documentation for your change if applicable.
-5.  Write good commit messages (no "Some changes" type messages please).
-
-### Submitting your Contribution
-
-After you are done making all of your changes, you need to push them up to
-your Fork on GitHub, but *first* you need to update your branch with any
-changes from the original repository.
-
-When updating your branch, you should use `rebase` and not merge in the
-changes:
-
-1.  Update your `1.8/develop` branch with changes from `upstream`:
-
-        $ git checkout 1.8/develop
-        $ git fetch upstream
-        $ git merge upstream/1.8/develop
-
-2.  Rebase your branch with the `1.8/develop` branch:
-
-        $ git checkout BRANCH_NAME
-        $ git rebase 1.8/develop
-
-    You may get merge conflicts while running the `rebase` command.  Resolve
-    all conflicts, then continue the `rebase`:
-
-        $ git add ...
-        $ git rebase --continue
-
-Once the rebase is complete, you are ready to push your changes up to GitHub:
-
-    $ git push origin BRANCH_NAME
-
-Now visit your Fork on GitHub (https://github.com/USERNAME/core), switch to
-your new branch, then click the "Pull Request" button.
-
-In your Pull Request message you should give as much detail as you can,
-including any related links (Issues, Forum Threads, etc.).
-
-### After Submission
-
-After submission, you may need to make changes after discussions on the Pull
-Request.  If this is the case, there are a few things you need to be aware
-of or do.
-
-1.  After making your changes and committing them locally, you need to
-    Rebase your branch with
-    the the `upstream/1.8/develop` branch:
-
-        $ git rebase -f upstream/1.8/develop
-
-2.  You will need to Force Push your changes up to GitHub.  This will
-    automatically update your Pull Request:
-
-        $ git push -f origin BRANCH_NAME
-
-Once we are satisfied, we will merge and close your Pull Request.
-
-### Resources
-
-* [Git Reference](http://gitref.org/)
-* [FuelPHP GitHub](https://github.com/fuel)
-
-If you have any questions, you can usually find at least one of the core
-developers in our IRC channel: #fuelphp on FreeNode
+Now your fork is up to date. This should be done regularly, or before you send a pull request at least.
