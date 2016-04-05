@@ -23,7 +23,10 @@
     </script>
 </head>
 <body>
+<<<<<<< HEAD
 <!--//angular.jsのモジュールをアサイン-->
+=======
+>>>>>>> ytm_delete
 <div id="wrapper">
         <div id="title_header" class="">
             <h1>独学.com</h1>
