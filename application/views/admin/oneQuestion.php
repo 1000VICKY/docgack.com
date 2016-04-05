@@ -42,7 +42,7 @@
                 <input type="button" class="btn btn-default btn-group-justified projectBox getExplanationText" value="解説を見る" />
             </form>
             <div class="displayExplanationText"></div>
-            <a class="btn btn-default btn-group-justified projectBox getExplanationText" href="/admin/modifyQuestion/<?php print($projectId); ?>/<?php print($questionData->question_id); ?>" >この設問を編集する</a>
+            <a class="btn btn-default btn-group-justified projectBox" href="/admin/modifyQuestion/<?php print($projectId); ?>/<?php print($questionData->question_id); ?>" >この設問を編集する</a>
         </div>
     </div>
 </div>
