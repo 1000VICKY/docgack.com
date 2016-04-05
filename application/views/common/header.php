@@ -6,10 +6,12 @@
 <meta name="keywords" content="独学.com,独学,資格勉強,docgack.com,webサービス">
 <meta name="description" content="独学で合格！資格・認定試験問題作成WEBサービス">
 <title>独学.com <?php echo($title); ?></title>
-    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css?1423914270" />
+    <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
     <link type="text/css" rel="stylesheet" href="/css/main.css?1426376435" />
-    <script type="text/javascript" src="/js/jquery.js?1423914270"></script>
-    <script type="text/javascript" src="/js/bootstrap.min.js?1423914270"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.2.js" integrity="sha256-VUCyr0ZXB5VhBibo2DkTVhdspjmxUgxDGaLQx7qb7xY=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-route.js"></script>
     <script type="text/javascript">
     //<!--
     //onloadイベントにイベントタンドラを付加
