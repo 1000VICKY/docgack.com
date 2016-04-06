@@ -13,6 +13,7 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-route.js"></script>
     <script type="text/javascript">
+<<<<<<< HEAD
         //onloadイベントにイベントタンドラを付加
         $(function (){
             var backButton = $("#backButton");
@@ -20,6 +21,16 @@
                 history.back();
             }, false);
         });
+=======
+    //<!--
+    //onloadイベントにイベントタンドラを付加
+    $(function (){
+        var backButton = $("#backButton");
+        backButton.click(function (e){
+            history.back();
+        }, false);
+    });
+>>>>>>> 7cf00d7cebe706fa51aa9410d5a93810c0865681
     </script>
 </head>
 <body>
