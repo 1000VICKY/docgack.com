@@ -13,14 +13,13 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-route.js"></script>
     <script type="text/javascript">
-    //<!--
-    //onloadイベントにイベントタンドラを付加
-    $(function (){
-        var backButton = $("#backButton");
-        backButton.click(function (e){
-            history.back();
-        }, false);
-    });
+        //onloadイベントにイベントタンドラを付加
+        $(function (){
+            var backButton = $("#backButton");
+            backButton.click(function (e){
+                history.back();
+            }, false);
+        });
     </script>
 </head>
 <body>
