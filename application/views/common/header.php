@@ -33,3 +33,4 @@
                 <a href="/admin/index"><?php print($mainHeader); ?></a> | <a href="/admin/logout">ログアウト</a>
             </h2>
         </div><!--/#mainHeader -->
+        <p>git テスト</p>
