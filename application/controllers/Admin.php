@@ -667,4 +667,30 @@ class Admin extends CI_Controller {
             $this->load->view("common/footer", $this->data);
         }
     }
+
+    /**
+     * 現在のdocgack.com稼働中DBのバックアップをサーバー上へ同期的に保存する
+     */
+    public function backupDB()
+    {
+        try{
+            $userName = "root";
+            $password = "akisen10574318";
+            $dbName ="exam_system";
+            $timeObj = new DateTime();
+            $dateTime = date_format($timeObj, "Y-m-d");
+            $backupFileName = "{$dateTime}.sql";
+            $backupDir = $this->input->server("DOCUMENT_ROOT") . "/{$backupFileName}";
+            //サーバー側へ投げたいバックグランド処理
+            $command = "/usr/bin/mysqldump -u {$userName} -p{$password} {$dbName} > {$backupDir}";
+            $res = system($command);
+            if(strlen($res) === 0){
+                $this->index();
+            }else{
+                throw new Exception("DBのバックアップに失敗");
+            }
+        }catch(Exception $e){
+            print($e->getMessage());
+        }
+    }
 }
