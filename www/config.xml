@@ -3,7 +3,7 @@
     <platform name="ios">
         <preference name="Orientation" value="all"/>
     </platform>
-    <content src="https://monaca.io/" />
+    <content src="https://docgack.com/" />
     <preference name="Orientation" value="portrait" />
     <preference name="BackupWebStorage" value="cloud" />
     <preference name="AutoHideSplashScreen" value="true" />
