@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="docgack">
+<html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -33,4 +33,3 @@
                 <a href="/admin/index"><?php print($mainHeader); ?></a> | <a href="/admin/logout">ログアウト</a>
             </h2>
         </div><!--/#mainHeader -->
-        <p>マスターブランチ差分確認</p>

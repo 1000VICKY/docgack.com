@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" id="com.docgack" version="1.0.0">
+    <platform name="ios">
+        <preference name="Orientation" value="all"/>
+    </platform>
+    <content src="https://monaca.io/" />
+    <preference name="Orientation" value="portrait" />
+    <preference name="BackupWebStorage" value="cloud" />
+    <preference name="AutoHideSplashScreen" value="true" />
+    <preference name="DisallowOverscroll" value="false" />
+    <access origin="*" />
+</widget>
