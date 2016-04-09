@@ -15,4 +15,4 @@
     </div>
 </div>
 <p><a href="/admin/addProject" class="btn btn-primary btn-group-justified">プロジェクトの新規作成</a></p>
-<p><a href="/admin/backupDB" class="btn btn-warning btn-group-justified">現在のDBをバックアップ</a></p>
+<p ng-controller="BackupController"><a ng-click="backupDB()" class="btn btn-warning btn-group-justified">現在のDBをバックアップ</a></p>
