@@ -16,6 +16,7 @@ class Api extends CI_Controller {
          * コントローラー事前処理
          * 各種ライブラリの取得
          */
+        /*
         $this->load->database();
         $this->load->library("session");
         $this->load->library("Clean");
@@ -40,6 +41,7 @@ class Api extends CI_Controller {
             }
             exit("リダイレクト中");
         }
+        */
     }
 
 
@@ -76,12 +78,8 @@ class Api extends CI_Controller {
     public function getAllDataToJson()
     {
         try{
-            ob_start();
-            print_r($this->input->post());
-            print_r(json_decode($this->input->post(), true);
-            $output = ob_get_clean();
             $this->output->set_content_type("text/plain");
-            $this->output->set_output($output);
+            $this->output->set_output("ユーザー対多数プロジェクト名一覧を取得");
         }catch(Exception $e){
             print($e->getMessage());
         }
@@ -92,10 +90,6 @@ class Api extends CI_Controller {
     public function backupDB($userName = null, $password = null, $dbName = null, $backupFileName = null)
     {
         try{
-            ob_start();
-            print_r($this->input->post());
-            print_r(json_decode($this->input->post() ,true));
-            $output = ob_get_clean();
             $userName = "root";
             $password = "akisen10574318";
             $dbName ="exam_system";
@@ -103,12 +97,16 @@ class Api extends CI_Controller {
             $dateTime = date_format($timeObj, "Y-m-d");
             $backupFileName = "{$dateTime}.sql";
             $backupDir = $this->input->server("DOCUMENT_ROOT") . "/{$backupFileName}";
-            //サーバー側へ投げたいバックグランド処理
+
+            /**
+             * サーバー側へ投げたいバックグランド処理
+             */
             $command = "/usr/bin/mysqldump -u {$userName} -p{$password} {$dbName} > {$backupDir}";
             $res = system($command);
             if(strlen($res) === 0){
-            $this->output->set_content_type("text/plain");
-                $this->output->set_output($output);
+                $this->output->set_content_type("application/json;charset=UTF-8");
+                print(json_encode(array("status" => 200)));
+                exit();
             }else{
                 throw new Exception("DBのバックアップに失敗");
             }

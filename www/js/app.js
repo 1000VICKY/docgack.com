@@ -19,7 +19,7 @@ docgack.controller("TopController", ["$scope", "$http", function($scope, $http){
         method : "POST",
         data  : $.param(params),
         url : "/api/getAllDataToJson",
-        headers : {"Content-Type" : "application/x-www-form-urlencoded; application/json; charset=UTF-8"}
+        headers : {"Content-Type" : "application/x-www-form-urlencoded; charset=UTF-8"}
     };
     //POSTメソッドによるHTTP通信
     $http(config)
@@ -35,7 +35,7 @@ docgack.controller("TopController", ["$scope", "$http", function($scope, $http){
 docgack.controller("BackupController", ["$scope", "$http", function($scope, $http){
     $scope.backupDB = function (){
         var params = $.param({ userId : "root", password : "password", dbName : "exam_system"});
-        var config = { headers : {"Content-Type" : "application/x-www-form-urlencoded; application/json; charset=UTF-8"} };
+        var config = { headers : {"Content-Type" : "application/x-www-form-urlencoded; charset=UTF-8"} };
 
         $http.post("/api/backupDB", params, config)
         .success(function (res){
