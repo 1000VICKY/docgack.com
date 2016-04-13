@@ -208,6 +208,34 @@ class Project extends CI_Model {
         }
     }
 
+    /**
+     * 指定したプロジェクトの全カラムを取得
+     * @param int $targetProject プロジェクトIDの指定
+     * @retrun bool
+     */
+    public function getQuestionDataBySelectTargetId($targetProjectId = null, $taragetQuestionId = null)
+    {
+        try{
+            //引数がint型の場合
+            $targetProjectId = (int)$targetProjectId;
+            if(is_int($targetProjectId) === true) {
+                $deleteFlag = 0;
+                $this->db->select("question_id, question_title, question_text, choice_list, choice_number, question_type, explanation_text, project_id");
+                $this->db->where("project_id", $targetProjectId);
+                $this->db->where("delete_flag", $deleteFlag);
+                $this->db->where("question_id", $taragetQuestionId);
+                $query = $this->db->get("question_table");
+                $res = $query->result();
+                return($res);
+            }else {
+                //引数がint型以外の場合例外発生
+                throw new Exception("メソッドへ渡す引数が適切ではありません。");
+            }
+        }catch(Exception $e){
+            throw new Exception($e->getMessage());
+        }
+    }
+
 
     /**
      * 指定した設問を削除
