@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="docgack">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -12,7 +12,7 @@
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-route.js"></script>
-    <script type="text/javascript" src="/js/app.js"></script>
+    <script type="text/javascript" src="/js/app.js" ></script>
     <script type="text/javascript">
         //onloadイベントにイベントタンドラを付加
         $(function (){
@@ -23,7 +23,7 @@
         });
     </script>
 </head>
-<body>
+<body ng-controller="TopController">
 <div id="wrapper">
         <div id="title_header" class="">
             <h1>独学.com</h1>
